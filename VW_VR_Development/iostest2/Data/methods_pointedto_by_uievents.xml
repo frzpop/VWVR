@@ -1,8 +1,0 @@
-<linker>
-	<assembly fullname="Assembly-CSharp">
-		<type fullname="StartMenu">
-			<method name="EngSelect"/>
-			<method name="SweSelect"/>
-		</type>
-	</assembly>
-</linker>
