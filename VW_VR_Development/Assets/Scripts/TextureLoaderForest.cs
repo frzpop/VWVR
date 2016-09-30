@@ -9,7 +9,7 @@ public class TextureLoaderForest : MonoBehaviour
 	//string path = "http://extern.volkswagen-transportbilar.se/nya-amarok/amarok360/bundles/";
 	int version = 3;
 	WWW www;
-	public Renderer[] cubes;
+	public GameObject[] newCubes;
 	public Renderer[] introCubesRend;
 	public Texture[] engIntroCubeTex;
 	public GameObject[] popups;
@@ -25,11 +25,9 @@ public class TextureLoaderForest : MonoBehaviour
 	bool load = false;
 	bool done = false;
 
-	public string[] names;
-
-	/*void Awake()
+	void Awake()
 	{
-		//Caching.CleanCache(); // for testing only.
+		Caching.CleanCache(); // for testing only.
 
 		GameObject copy = Instantiate(textMesh.gameObject, textMesh.transform.position + new Vector3 (2000f, 0f, 0f), textMesh.transform.rotation ) as GameObject;
 		textMeshRightCopy = copy.GetComponent<TextMesh>();
@@ -45,32 +43,32 @@ public class TextureLoaderForest : MonoBehaviour
 
 		if ( Application.platform == RuntimePlatform.Android )
 		{
-			fileName = "bundleAndroid.unity3d";
+			fileName = "forestBundleAndroid.unity3d";
 			version = 2;
 		}	
 		else if ( Application.platform == RuntimePlatform.IPhonePlayer )
 		{
-			fileName = "bundleIphone.unity3d";
+			fileName = "forestBundleIphone.unity3d";
 		}
 		else if ( Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor )
 		{
 			path = "http://arielsantibanez.com/onewebmedia/temp/";
-			fileName = "bundleWin.unity3d";
+			fileName = "forestBundleWin.unity3d";
 		}
 		else if ( Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor )
 		{
 			path = "http://arielsantibanez.com/onewebmedia/temp/";
-			fileName = "bundleOsx.unity3d";
+			fileName = "forestBundleOsx.unity3d";
 		}
 		StartCoroutine( LoadTexures( path + fileName ) );
 
 		if (PlayerPrefs.GetInt("lang") == 1)
 		{
-			for (int i = 0; i < popups.Length; i++)
+			/*for (int i = 0; i < popups.Length; i++)
 			{
 				Popup scr = popups[i].GetComponent<Popup>();
 				scr.myID += (scr.textures.Length / 2);
-			}
+			}*/
 
 			for (int i = 0; i < introCubesRend.Length; i++)
 			{
@@ -78,9 +76,9 @@ public class TextureLoaderForest : MonoBehaviour
 				mat.mainTexture = engIntroCubeTex[i];
 			}
 		}
-	} */
+	}
 
-	/*void Update ()
+	void Update ()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 			Application.LoadLevel("start_menu");
@@ -101,9 +99,9 @@ public class TextureLoaderForest : MonoBehaviour
 			done = true;
 			StartCoroutine (DelayedDestroy(1f));
 		}	
-	} */
+	} 
 
-	/*IEnumerator LoadTexures( string url )
+	IEnumerator LoadTexures( string url )
 	{
 		Loading(true);
 		while (!Caching.ready)
@@ -131,25 +129,12 @@ public class TextureLoaderForest : MonoBehaviour
 			textures[i] = (Texture2D)objs[i];
 			objs[i] = null;
 		}
+
+		ApplyTextures(textures);
 			
-		for (int i = 0; i < cubes.Length; i++)
-		{
-			Material mat = cubes[i].material;
-			mat.mainTexture = textures[i];
-			cubes[i] = null;
-			textures[i] = null;
-		}
 		Loading(false);
-	}*/
-
-	public Texture2D[] newTexs;
-	public GameObject[] newCubes;
-
-	void Start ()
-	{
-		ApplyTextures(newTexs);
 	}
-	
+
 	void ApplyTextures( Texture2D[] textures )
 	{
 		List<Renderer> sides = new List<Renderer>();
@@ -161,7 +146,7 @@ public class TextureLoaderForest : MonoBehaviour
 		{
 			sides[i].material.mainTexture = textures[i];
 		}
-		
+		sides.Clear();
 	}
 
 	void Loading(bool loading)

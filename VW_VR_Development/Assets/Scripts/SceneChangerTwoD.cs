@@ -49,10 +49,22 @@ public class SceneChangerTwoD : MonoBehaviour {
 		{
 			fadeTimer -= Time.deltaTime;
 			color.a = fadeTimer / fadeTimerMax;
-			startLCopy.GetComponent<Renderer>().material.color = color;
-			startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
-			startRCopy.GetComponent<Renderer>().material.color = color;
-			startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+			if (startLCopy.GetComponent<Renderer>() != null)
+			{
+				startLCopy.GetComponent<Renderer>().material.color = color;
+				startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+				startRCopy.GetComponent<Renderer>().material.color = color;
+				startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+			}
+			else
+			{
+				startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.color = color;
+				startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
+				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.color = color;
+				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
+				
+			}
+			
 
 			startLCopy.transform.position -= travelDirection;
 			startRCopy.transform.position -= travelDirection;
@@ -116,8 +128,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 					startRCopy.transform.position = target.transform.position + rightEyeOffset;
 					startLCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 					startRCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
-					startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
-					startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+					if ( startLCopy.GetComponent<Renderer>() != null )
+					{
+						startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+						startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+					}
+					else
+					{
+						startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
+						startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
+					}
 				}
 			}
 		} else {
