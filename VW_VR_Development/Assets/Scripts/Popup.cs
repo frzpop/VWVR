@@ -69,7 +69,7 @@ public class Popup : MonoBehaviour {
 		myRingCopy.GetComponent<Renderer>().material.color = ringColor;
 	}
 
-	void RaycastFromEye()
+	/*void RaycastFromEye()
 	{
 		RaycastHit hit;
 		Ray ray = new Ray(leftEye.transform.position, leftEye.transform.forward);
@@ -116,7 +116,7 @@ public class Popup : MonoBehaviour {
 			PopupTrigger ( false );
 			timer = 0f;
 		}
-	}
+	} */
 
 	public void LookintAtMe ()
 	{
