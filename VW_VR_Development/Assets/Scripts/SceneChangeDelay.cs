@@ -11,5 +11,5 @@ public class SceneChangeDelay : MonoBehaviour {
 		yield return new WaitForSeconds(duration);
 		delay = false;
 	}
-	
+
 }

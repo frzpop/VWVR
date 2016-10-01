@@ -28,21 +28,27 @@ public class SceneChangerTwoD : MonoBehaviour {
 	private float timer;
 	private float timerLimit = 0.6f;
 	private bool changedPosition;
+	private bool SFXPlaying = false;
 
 	public bool triggerMusic = false;
 	public AudioPlayer musicPlayer;
 
+	public bool triggerSFX = false;
+	private bool keepSFX = false;
+    public AudioSource SFXSound;
+
 	public SceneChangeDelay delayScript;
 
 	void Start () {
+		SFXPlaying = false;
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
 		rightCopy.transform.position = transform.position + rightEyeOffset;
 		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent;
 		color = new Color (1f, 1f, 1f, 0f);
 		ringColor = new Color (1f, 1f, 1f, 0f);
-		
+
 	}
-	
+
 	void Update () {
 
 		if (changedPosition)
@@ -62,16 +68,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 				startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
 				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.color = color;
 				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
-				
+
 			}
-			
+
 
 			startLCopy.transform.position -= travelDirection;
 			startRCopy.transform.position -= travelDirection;
 			delayScript.StartCoroutine("DelayTrigger", (fadeTimer * 1.8f));
 			if (fadeTimer < 0)
 			{
-				Destroy(startLCopy);	
+				Destroy(startLCopy);
 				Destroy(startRCopy);
 				changedPosition = false;
 				color.a = 0f;
@@ -83,7 +89,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 		if (Physics.Raycast (leftEye.transform.position, leftEye.transform.forward, out hit, 100f) && !changedPosition) {
 			if ((hit.transform.gameObject != gameObject && hit.transform.gameObject != ring) || delayScript.delay)
 				return;
-	
+
 			if (!ring)
 			{
 				ringColor = new Color (1f, 1f, 1f, 0f);
@@ -109,10 +115,20 @@ public class SceneChangerTwoD : MonoBehaviour {
 			ring.transform.localScale = new Vector3(scale,scale,scale);
 			ringRightCopy.transform.localScale = new Vector3(scale,scale,scale);
 
+			if ( triggerSFX && !SFXPlaying )
+			{
+				SFXTrigger();
+				SFXPlaying = true;
+			}
+
 			if (timer > timerLimit) {
+
+				// Keep SFX playing during transition
+				keepSFX = true;
+
 				this.GetComponent<AudioSource>().Play ();
 				if (triggerMusic)
-				MusicTrigger();
+					MusicTrigger();
 
 				timer = 0f;
 				leftEyeParent.transform.position = target.transform.position;
@@ -141,7 +157,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 				}
 			}
 		} else {
+
 			timer = 0f;
+
+			// Stop sound when not aiming at reticle and we're not in "keep-mode"
+			if ( triggerSFX && SFXPlaying && !keepSFX )
+			{
+				// print("killed teleport audio");
+				SFXTrigger();
+				SFXPlaying = false;
+			}
 			if (ring) {
 				Destroy(ring);
 			}
@@ -157,5 +182,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 		musicPlayer.PlayMusic();
 	}
 
+	void SFXTrigger()
+	{
+		if ( ! SFXPlaying )
+		{
+			SFXSound.Play();
+		}
+		else
+		{
+			StartCoroutine ( AudioFader.FadeOut( SFXSound, 0.1f ) );
+		}
+	}
 
 }

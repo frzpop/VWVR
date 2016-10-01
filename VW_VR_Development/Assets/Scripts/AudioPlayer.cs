@@ -14,8 +14,9 @@ public class AudioPlayer : MonoBehaviour {
 	void Update () {
 		if (leftEye.transform.position.z > 100 && !playing && !trigger) {
 			playing = true;
-			this.GetComponent<AudioSource> ().Play ();
-			//Debug.Log ("gg");
+			StartCoroutine ( AudioFader.FadeIn( this.GetComponent<AudioSource> (), 1.5f ) );
+			// this.GetComponent<AudioSource> ().Play ();
+			// Debug.Log ("gg");
 		}
 	}
 
@@ -24,4 +25,11 @@ public class AudioPlayer : MonoBehaviour {
 		this.GetComponent<AudioSource>().Play();
 		playing = true;
 	}
+
+	public void StopMusic ()
+	{
+		this.GetComponent<AudioSource>().Stop();
+		playing = false;
+	}
+
 }

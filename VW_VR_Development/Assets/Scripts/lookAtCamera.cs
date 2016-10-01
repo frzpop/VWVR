@@ -15,6 +15,6 @@ public class lookAtCamera : MonoBehaviour {
 		{
 			cameraObject = transform.parent.GetComponent<lookAtCamera>().cameraObject;
 		}
-		
+
 	}
 }
