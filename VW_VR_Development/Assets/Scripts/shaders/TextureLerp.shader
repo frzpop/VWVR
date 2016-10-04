@@ -1,4 +1,4 @@
-﻿Shader "TextureLerp"
+﻿Shader "Basic/TextureLerp"
 {
 	Properties
 	{

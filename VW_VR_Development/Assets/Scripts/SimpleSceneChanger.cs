@@ -17,6 +17,8 @@ public class SimpleSceneChanger : MonoBehaviour {
 	Vector3 travelDirection;
 	Vector3 rightEyeOffset;
 
+	public SceneChangeDelay delayScript;
+
 	void Start ()
 	{
 		rightEyeOffset = new Vector3(2000f, 0f, 0f);
@@ -31,13 +33,32 @@ public class SimpleSceneChanger : MonoBehaviour {
 		{
 			fadeTimer -= Time.deltaTime;
 			color.a = fadeTimer / fadeTimerMax;
-			startLCopy.GetComponent<Renderer>().material.color = color;
-			startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
-			startRCopy.GetComponent<Renderer>().material.color = color;
-			startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+			if (startLCopy.GetComponent<Renderer>() != null)
+			{
+				startLCopy.GetComponent<Renderer>().material.color = color;
+				startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+				startRCopy.GetComponent<Renderer>().material.color = color;
+				startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
+			}
+			else
+			{
+				Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
+				for (int i = 0; i < rends.Length; i++)
+				{
+					rends[i].material.color = color;
+					rends[i].material.renderQueue = 9001;
+				}
+				rends = startRCopy.GetComponentsInChildren<Renderer>();
+				for (int i = 0; i < rends.Length; i++)
+				{
+					rends[i].material.color = color;
+					rends[i].material.renderQueue = 9001;
+				}
+			}
 
 			startLCopy.transform.position -= travelDirection;
 			startRCopy.transform.position -= travelDirection;
+			delayScript.StartCoroutine("DelayTrigger", (fadeTimer * 8f ));
 			if (fadeTimer < 0)
 			{
 				Destroy(startLCopy);

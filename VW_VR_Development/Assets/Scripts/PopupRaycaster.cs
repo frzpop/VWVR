@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class PopupRaycaster : MonoBehaviour {
 
@@ -8,7 +7,6 @@ public class PopupRaycaster : MonoBehaviour {
 	public bool looking;
 	public bool popup = false; // is accessed and changed from Popup class.
 
-	
 	void Update ()
 	{
 		
@@ -18,16 +16,23 @@ public class PopupRaycaster : MonoBehaviour {
 
 		if (hits.Length == 1)
 		{
+			//Debug.Log("collided with: " + hits[0].collider.tag);
 			if ( hits[0].collider.gameObject.GetComponent<Popup>() != null && !popup )
 			{
 				looking = true;
-				hits[0].collider.gameObject.GetComponent<Popup>().LookintAtMe();
+				hits[0].collider.gameObject.GetComponent<Popup>().LookingAtMe();
 				lookingAt = hits[0].collider.gameObject;
 			}
 			else if (hits[0].collider.tag == "Popup")
 			{
 				looking = true;
 				lookingAt = lookingAt = hits[0].collider.gameObject;
+			}
+			else if (hits[0].collider.tag == "Swapper")
+			{
+				looking = true;
+				hits[0].collider.gameObject.GetComponent<TextureSwapperEye>().LookingAtMe();
+				lookingAt = hits[0].collider.gameObject;
 			}
 			else
 			{
@@ -40,16 +45,23 @@ public class PopupRaycaster : MonoBehaviour {
 		{
 			for (int i = 0; i < hits.Length; i++)
 			{
+				//	Debug.Log("collided with: " + hits[i].collider.tag);
 				if ( hits[i].collider.gameObject.GetComponent<Popup>() != null && !popup )
 				{
 					looking = true;
-					hits[i].collider.gameObject.GetComponent<Popup>().LookintAtMe();
+					hits[i].collider.gameObject.GetComponent<Popup>().LookingAtMe();
 					lookingAt = hits[i].collider.gameObject;
 				}
 				else if ( hits[i].collider.tag == "Popup" )
 				{
 					looking = true;
 					lookingAt = lookingAt = hits[i].collider.gameObject;
+				}
+				else if (hits[i].collider.tag == "Swapper")
+				{
+					looking = true;
+					hits[i].collider.gameObject.GetComponent<TextureSwapperEye>().LookingAtMe();
+					lookingAt = hits[i].collider.gameObject;
 				}
 				else
 				{
@@ -76,7 +88,7 @@ public class PopupRaycaster : MonoBehaviour {
 				looking = true;
 				if (hit.collider.GetComponent<Popup>() != null && !popup)
 				{
-					hit.collider.gameObject.GetComponent<Popup>().LookintAtMe();
+					hit.collider.gameObject.GetComponent<Popup>().LookingAtMe();
 					lookingAt = hit.collider.gameObject;
 				}
 				else

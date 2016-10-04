@@ -27,7 +27,7 @@ public class TextureLoaderForest : MonoBehaviour
 
 	void Awake()
 	{
-		Caching.CleanCache(); // for testing only.
+		//Caching.CleanCache(); // for testing only.
 
 		GameObject copy = Instantiate(textMesh.gameObject, textMesh.transform.position + new Vector3 (2000f, 0f, 0f), textMesh.transform.rotation ) as GameObject;
 		textMeshRightCopy = copy.GetComponent<TextMesh>();

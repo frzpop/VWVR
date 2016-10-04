@@ -15,7 +15,12 @@ public class RightCopier : MonoBehaviour {
 		copy = Instantiate(copyPrefab) as GameObject;
 		copy.transform.position = transform.position + offset;
 		copy.GetComponent<lookAtCamera>().cameraObject = rightEyeParent;
-		copy.transform.GetChild(0).GetComponent<lookAtCamera>().cameraObject = rightEyeParent;
+
+		if ( copy.transform.GetChild(0).GetComponent<lookAtCamera>() != null )
+		{
+			copy.transform.GetChild(0).GetComponent<lookAtCamera>().cameraObject = rightEyeParent;
+		}
+		
 		//if (makeChild)
 			//copy.transform.parent = parent.transform;
 	}

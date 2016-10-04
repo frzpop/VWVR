@@ -44,8 +44,20 @@ public class SceneChangerTwoD : MonoBehaviour {
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
 		rightCopy.transform.position = transform.position + rightEyeOffset;
 		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent;
-		color = new Color (1f, 1f, 1f, 0f);
-		ringColor = new Color (1f, 1f, 1f, 0f);
+		//color = new Color (1f, 1f, 1f, 0f);
+
+		if (startL.GetComponent<Renderer>() != null)
+		{
+			color = startL.GetComponent<Renderer>().material.color;
+			color.a = 0f;
+		}
+		else if (startL.GetComponent<Renderer>().material.color != null )
+		{
+			//color = startL.GetComponentInChildren<Renderer>().material.color;
+			color.a = 0f;
+		}
+
+			ringColor = new Color (1f, 1f, 1f, 0f);
 
 	}
 
@@ -64,17 +76,23 @@ public class SceneChangerTwoD : MonoBehaviour {
 			}
 			else
 			{
-				startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.color = color;
-				startLCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
-				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.color = color;
-				startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
-
+				Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
+				for (int i = 0; i < rends.Length; i++)
+				{
+					rends[i].material.color = color;
+					rends[i].material.renderQueue = 9001;
+				}
+				rends = startRCopy.GetComponentsInChildren<Renderer>();
+				for (int i = 0; i < rends.Length; i++)
+				{
+					rends[i].material.color = color;
+					rends[i].material.renderQueue = 9001;
+				}
 			}
-
 
 			startLCopy.transform.position -= travelDirection;
 			startRCopy.transform.position -= travelDirection;
-			delayScript.StartCoroutine("DelayTrigger", (fadeTimer * 1.8f));
+			delayScript.StartCoroutine("DelayTrigger", (fadeTimer * 8f));
 			if (fadeTimer < 0)
 			{
 				Destroy(startLCopy);
@@ -111,7 +129,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 				ringRightCopy.transform.position += new Vector3 (2000f, 0f, 0f);
 			}
 
-			scale = 0.4f + (1.5f*(timerLimit - timer)/timerLimit);
+			scale = 0.1f + (1f*(timerLimit - timer)/timerLimit);
 			ring.transform.localScale = new Vector3(scale,scale,scale);
 			ringRightCopy.transform.localScale = new Vector3(scale,scale,scale);
 

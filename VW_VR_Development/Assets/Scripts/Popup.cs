@@ -56,7 +56,7 @@ public class Popup : MonoBehaviour {
 		}
 		else if ( popup )
 		{
-			if ( raycaster.lookingAt != popupObj && raycaster.lookingAt != this.gameObject) //If my popup is triggered, and player not looking at my popup and not looking at my icon.
+			if ( raycaster.lookingAt != popupObj && raycaster.lookingAt != this.gameObject ) //If my popup is triggered, and player not looking at my popup and not looking at my icon.
 			{
 				NotLooking();
 			}
@@ -118,7 +118,7 @@ public class Popup : MonoBehaviour {
 		}
 	} */
 
-	public void LookintAtMe ()
+	public void LookingAtMe ()
 	{
 		lookingAtMe = true;
 		if (!popup) {
@@ -249,3 +249,4 @@ public class Popup : MonoBehaviour {
 
 
 }
+	
