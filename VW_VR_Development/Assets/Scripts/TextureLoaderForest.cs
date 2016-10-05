@@ -58,7 +58,7 @@ public class TextureLoaderForest : MonoBehaviour
 		else if ( Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor )
 		{
 			path = "http://arielsantibanez.com/onewebmedia/temp/";
-			fileName = "forestBundleOsx.unity3d";
+			fileName = "forestBundleMac.unity3d";
 		}
 		StartCoroutine( LoadTexures( path + fileName ) );
 

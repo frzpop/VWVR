@@ -39,6 +39,8 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 	public SceneChangeDelay delayScript;
 
+    public bool texSwapper;
+
 	void Start () {
 		SFXPlaying = false;
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
@@ -173,6 +175,11 @@ public class SceneChangerTwoD : MonoBehaviour {
 						startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
 					}
 				}
+
+                if ( texSwapper )
+                {
+                    TriggerTexSwapper();
+                }
 			}
 		} else {
 
@@ -191,6 +198,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 			if (ringRightCopy) {
 				Destroy(ringRightCopy);
 			}
+           
 		}
 
 	}
@@ -211,5 +219,11 @@ public class SceneChangerTwoD : MonoBehaviour {
 			StartCoroutine ( AudioFader.FadeOut( SFXSound, 0.1f ) );
 		}
 	}
+
+    void TriggerTexSwapper()
+    {
+        GameObject swapper = GameObject.FindGameObjectWithTag("TextureSwapper");
+        swapper.GetComponent<TextureSwapper>().MoveEyes();
+    }
 
 }

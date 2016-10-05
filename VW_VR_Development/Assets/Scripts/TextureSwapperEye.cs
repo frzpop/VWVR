@@ -5,11 +5,10 @@ public class TextureSwapperEye : MonoBehaviour
 
 	public int myID;
 	public PopupRaycaster raycaster;
-	public GameObject leftEye;
+	public TextureSwapper swapper;
 	public RightCopier copier;
 	public GameObject myRing;
 	public GameObject myRingCopy;
-	public TextureSwapper swapper;
 	Color ringColor;
 
 	GameObject rightCopy;
@@ -38,23 +37,29 @@ public class TextureSwapperEye : MonoBehaviour
 
 	public void LookingAtMe()
 	{
-		if ( !triggered )
+		if ( !swapper.isSwapping )
 		{
-			timer += Time.deltaTime;
-			RingAnim();
+			if ( !triggered )
+			{
+				timer += Time.deltaTime;
+				RingAnim();
+			}
+			else
+			{
+				RingReset();
+			}
+
+			if ( timer > limit && !triggered )
+			{
+				TriggerMe();
+				timer = 0f;
+			}
 		}
 		else
-		{
 			RingReset();
-		}
 
-		if ( timer > limit && !triggered )
-		{
-			TriggerMe();
-			timer = 0f;
-		}
 	}
-
+	
 	void TriggerMe()
 	{
 		triggered = true;

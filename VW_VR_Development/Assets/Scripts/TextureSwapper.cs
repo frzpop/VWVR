@@ -7,13 +7,16 @@ public class TextureSwapper : MonoBehaviour {
 	public Renderer[] rends;
 	public Texture2D[] texturePool;
 	public GameObject[] swapperEyes;
+	public Transform leftCardboard;
 	Material[] mats;
 
 	bool swap;
-	bool done = true;
+	public bool isSwapping = false;
 	public float fade = 0f;
 	float targetFade;
-	float duration = 2.5f;
+	float duration = 0.5f;
+
+	public float targetDistance;
 
 	void Start ()
 	{
@@ -27,14 +30,11 @@ public class TextureSwapper : MonoBehaviour {
 		{
 			mats[i].shader = swapShader;
 		}
+			
 	}
 
 	void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			SwapTexture( Random.Range( 0, texturePool.Length ) );
-		}
 			
 		Swapper();
 	}
@@ -58,8 +58,6 @@ public class TextureSwapper : MonoBehaviour {
 			for (int i = 0; i < mats.Length; i++)
 			{
 				mats[i].SetFloat("_Tween", fade);
-				//Debug.Log(mats[i].GetFloat("_Tween"));
-				Debug.Log( fade );
 			}
 		}
 	}
@@ -101,11 +99,25 @@ public class TextureSwapper : MonoBehaviour {
 
 	IEnumerator AnimateFadeValue ( float end, float duration )
 	{
-		done = false;
+		isSwapping = true;
 		DOTween.KillAll();
 		DOTween.To( () => fade, x => fade = x, end, duration );
 		yield return new WaitForSeconds(duration);
-		done = true;
+		isSwapping = false;
+	}
+
+	public void MoveEyes ()
+	{
+		
+		Vector3 cameraPos = leftCardboard.position;
+		for (int i = 0; i < swapperEyes.Length; i++)
+		{
+			Vector3 rightOffset = new Vector3( 2000f, 0f, 0f );
+			Vector3 targetPos = cameraPos - swapperEyes[i].transform.up * targetDistance;
+
+			swapperEyes[i].transform.position = targetPos;
+			swapperEyes[i].GetComponent<TextureSwapperEye>().copier.copy.transform.position = targetPos + rightOffset;
+		}
 	}
 
 
