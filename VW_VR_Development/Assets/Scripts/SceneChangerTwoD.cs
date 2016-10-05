@@ -35,31 +35,22 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 	public bool triggerSFX = false;
 	private bool keepSFX = false;
-    public AudioSource SFXSound;
+    	public AudioSource SFXSound;
 
 	public SceneChangeDelay delayScript;
 
-    public bool texSwapper;
+    	public bool texSwapper;
 
 	void Start () {
 		SFXPlaying = false;
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
 		rightCopy.transform.position = transform.position + rightEyeOffset;
 		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent;
-		//color = new Color (1f, 1f, 1f, 0f);
+		color = new Color (1f, 1f, 1f, 0f);
+ 
+		ringColor = new Color (1f, 1f, 1f, 0f);
 
-		if (startL.GetComponent<Renderer>() != null)
-		{
-			color = startL.GetComponent<Renderer>().material.color;
-			color.a = 0f;
-		}
-		else if (startL.GetComponent<Renderer>().material.color != null )
-		{
-			//color = startL.GetComponentInChildren<Renderer>().material.color;
-			color.a = 0f;
-		}
-
-			ringColor = new Color (1f, 1f, 1f, 0f);
+            Time.timeScale = 0.2f;
 
 	}
 
@@ -153,6 +144,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 				timer = 0f;
 				leftEyeParent.transform.position = target.transform.position;
 				rightEyeParent.transform.position = leftEyeParent.transform.position + rightEyeOffset;
+
 				if (animate) {
 					changedPosition = true;
 					fadeTimer = fadeTimerMax;
@@ -162,8 +154,20 @@ public class SceneChangerTwoD : MonoBehaviour {
 					startRCopy = Instantiate (startR) as GameObject;
 					startLCopy.transform.position = target.transform.position;
 					startRCopy.transform.position = target.transform.position + rightEyeOffset;
+
 					startLCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 					startRCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
+
+					Shader fadeShader = Shader.Find("Basic/TextureWithAlpha");
+					Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
+					for (int i = 0; i < rends.Length; i++)
+						rends [i].material.shader = fadeShader;
+		
+					rends = startRCopy.GetComponentsInChildren<Renderer>();
+					for (int i = 0; i < rends.Length; i++)
+						rends [i].material.shader = fadeShader;
+
+
 					if ( startLCopy.GetComponent<Renderer>() != null )
 					{
 						startLCopy.GetComponent<Renderer>().material.renderQueue = 9001;
@@ -175,7 +179,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 						startRCopy.transform.GetChild(2).GetComponent<Renderer>().material.renderQueue = 9001;
 					}
 				}
-
+                
                 if ( texSwapper )
                 {
                     TriggerTexSwapper();
