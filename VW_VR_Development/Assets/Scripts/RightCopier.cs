@@ -9,6 +9,7 @@ public class RightCopier : MonoBehaviour {
 	public GameObject copy;
 	public Vector3 offset;
 	//public bool makeChild;
+	public bool isSwapperEye;
 	
 	void Awake ()
 	{
@@ -19,6 +20,11 @@ public class RightCopier : MonoBehaviour {
 		if ( copy.transform.GetChild(0).GetComponent<lookAtCamera>() != null )
 		{
 			copy.transform.GetChild(0).GetComponent<lookAtCamera>().cameraObject = rightEyeParent;
+		}
+
+		if (isSwapperEye) 
+		{
+			copy.GetComponent<Renderer> ().material = gameObject.GetComponent<Renderer> ().material;
 		}
 		
 		//if (makeChild)

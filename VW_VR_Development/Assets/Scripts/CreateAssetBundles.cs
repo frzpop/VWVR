@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿/*using UnityEditor;
 
 [InitializeOnLoad]
 public class CreateAssetBundles {
@@ -8,9 +8,9 @@ public class CreateAssetBundles {
 	static void BuildAllAssetBundles()
 	{
 		//BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Win", BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
-		BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Mac", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSXIntel64 );
-		//BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.iOS);
-		//BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.Android);
+		//BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Mac", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSXIntel64 );
+		BuildPipeline.BuildAssetBundles("Assets/AssetBundles/iOS", BuildAssetBundleOptions.None, BuildTarget.iOS);
+		//BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Android", BuildAssetBundleOptions.None, BuildTarget.Android);
 	}
 
-}
+}*/

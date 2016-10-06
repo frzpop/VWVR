@@ -9,6 +9,7 @@
 	{
 		Tags
 		{
+			"Queue" = "Overlay"
 			"PreviewType" = "Plane"
 		}
 		Pass

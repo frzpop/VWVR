@@ -8,6 +8,8 @@ public class TextureSwapper : MonoBehaviour {
 	public Texture2D[] texturePool;
 	public GameObject[] swapperEyes;
 	public Transform leftCardboard;
+	public TextMesh textMesh;
+
 	Material[] mats;
 
 	bool swap;
@@ -75,6 +77,8 @@ public class TextureSwapper : MonoBehaviour {
 			mats[0].SetTexture("_MainTex", texturePool[ id ]);
 			mats[1].SetTexture("_MainTex", texturePool[ id + 1] );
 		}
+
+		SwapText ( id );
 	}
 
 	public void SetActiveEyes( GameObject obj )
@@ -118,6 +122,53 @@ public class TextureSwapper : MonoBehaviour {
 			swapperEyes[i].transform.position = targetPos;
 			swapperEyes[i].GetComponent<TextureSwapperEye>().copier.copy.transform.position = targetPos + rightOffset;
 		}
+	}
+
+	void SwapText ( int id )
+	{
+		switch (id)
+		{
+		case 2:
+			id = 1;
+			break;
+		case 4:
+			id = 2;
+			break;
+		case 6:
+			id = 3;
+			break;
+		case 8:
+			id = 4;
+			break;
+		case 10:
+			id = 5;
+			break;
+		}
+
+		switch ( id ) 
+		{
+		case 0:
+			textMesh.text = "Ravenna Blue Metallic";
+			break;
+		case 1:
+			textMesh.text = "Chestnut Brown Metallic";
+			break;
+		case 2:
+			textMesh.text = "Indium Gray Metallic";
+			break;
+		case 3:
+			textMesh.text = "Mojave Beige Metallic";
+			break;
+		case 4:
+			textMesh.text = "Reflex Silver Metallic";
+			break;
+		case 5:
+			textMesh.text = "Starlight Blue Metallic";
+			break;
+		}
+
+		textMesh.GetComponent<SwapperText> ().copy.GetComponent<TextMesh> ().text = textMesh.text;
+		
 	}
 
 

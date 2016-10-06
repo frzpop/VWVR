@@ -41,16 +41,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 
     	public bool texSwapper;
 
+	//public Material fadeMat;
+
 	void Start () {
 		SFXPlaying = false;
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
 		rightCopy.transform.position = transform.position + rightEyeOffset;
-		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent;
-		color = new Color (1f, 1f, 1f, 0f);
+		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent; 
  
 		ringColor = new Color (1f, 1f, 1f, 0f);
 
-            Time.timeScale = 0.2f;
 
 	}
 
@@ -58,6 +58,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 		if (changedPosition)
 		{
+
 			fadeTimer -= Time.deltaTime;
 			color.a = fadeTimer / fadeTimerMax;
 			if (startLCopy.GetComponent<Renderer>() != null)
@@ -72,12 +73,16 @@ public class SceneChangerTwoD : MonoBehaviour {
 				Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
 				for (int i = 0; i < rends.Length; i++)
 				{
+					color = rends [i].material.color;
+					color.a = fadeTimer / fadeTimerMax;
 					rends[i].material.color = color;
 					rends[i].material.renderQueue = 9001;
 				}
 				rends = startRCopy.GetComponentsInChildren<Renderer>();
 				for (int i = 0; i < rends.Length; i++)
 				{
+					color = rends [i].material.color;
+					color.a = fadeTimer / fadeTimerMax;
 					rends[i].material.color = color;
 					rends[i].material.renderQueue = 9001;
 				}
@@ -126,6 +131,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 			ring.transform.localScale = new Vector3(scale,scale,scale);
 			ringRightCopy.transform.localScale = new Vector3(scale,scale,scale);
 
+			Debug.Log (SFXPlaying);
 			if ( triggerSFX && !SFXPlaying )
 			{
 				SFXTrigger();
@@ -158,14 +164,25 @@ public class SceneChangerTwoD : MonoBehaviour {
 					startLCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 					startRCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 
-					Shader fadeShader = Shader.Find("Basic/TextureWithAlpha");
+					//Shader fadeShader = Shader.Find ("Basic/TextureWithAlpha");
 					Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
-					for (int i = 0; i < rends.Length; i++)
-						rends [i].material.shader = fadeShader;
+					for (int i = 0; i < rends.Length; i++) 
+					{	
+						Texture tex = rends [i].material.mainTexture;
+						//fadeMat.mainTexture = tex;
+						//rends [i].material = fadeMat;
+						rends [i].material.renderQueue = 9001;
+					}
+						
 		
 					rends = startRCopy.GetComponentsInChildren<Renderer>();
-					for (int i = 0; i < rends.Length; i++)
-						rends [i].material.shader = fadeShader;
+					for (int i = 0; i < rends.Length; i++) 
+					{	
+						Texture tex = rends [i].material.mainTexture;
+						//fadeMat.mainTexture = tex;
+						//rends [i].material = fadeMat;
+						rends [i].material.renderQueue = 9001;
+					}
 
 
 					if ( startLCopy.GetComponent<Renderer>() != null )
@@ -190,6 +207,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 			timer = 0f;
 
 			// Stop sound when not aiming at reticle and we're not in "keep-mode"
+			Debug.Log( triggerSFX + " " + SFXPlaying + " " + keepSFX );
 			if ( triggerSFX && SFXPlaying && !keepSFX )
 			{
 				// print("killed teleport audio");
@@ -214,13 +232,15 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 	void SFXTrigger()
 	{
+		Debug.Log (SFXPlaying);
 		if ( ! SFXPlaying )
 		{
-			SFXSound.Play();
+			//SFXSound.Play();
+			SFXSound.PlayOneShot(SFXSound.clip);
 		}
 		else
 		{
-			StartCoroutine ( AudioFader.FadeOut( SFXSound, 0.1f ) );
+			StartCoroutine ( AudioFader.FadeOut( SFXSound, 0.25f ) );
 		}
 	}
 
