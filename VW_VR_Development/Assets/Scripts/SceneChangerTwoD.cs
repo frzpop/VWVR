@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class SceneChangerTwoD : MonoBehaviour {
 
@@ -28,23 +29,22 @@ public class SceneChangerTwoD : MonoBehaviour {
 	private float timer;
 	private float timerLimit = 0.6f;
 	private bool changedPosition;
-	private bool SFXPlaying = false;
 
 	public bool triggerMusic = false;
 	public AudioPlayer musicPlayer;
 
-	public bool triggerSFX = false;
-	private bool keepSFX = false;
-    	public AudioSource SFXSound;
+    public AudioSource SFXSound;
+	public bool triggerTeleportSfx;
+	public bool triggerCarSound;
+	bool teleportSound = false;
+	bool keep = false;
 
 	public SceneChangeDelay delayScript;
 
-    	public bool texSwapper;
+    public bool texSwapper;
 
-	//public Material fadeMat;
 
 	void Start () {
-		SFXPlaying = false;
 		rightCopy = Instantiate (rightCopyPrefab) as GameObject;
 		rightCopy.transform.position = transform.position + rightEyeOffset;
 		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent; 
@@ -56,7 +56,6 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 		if (changedPosition)
 		{
-
 			fadeTimer -= Time.deltaTime;
 			color.a = fadeTimer / fadeTimerMax;
 			if (startLCopy.GetComponent<Renderer>() != null)
@@ -107,7 +106,6 @@ public class SceneChangerTwoD : MonoBehaviour {
 			}
 		}
 
-
 		if (Physics.Raycast (leftEye.transform.position, leftEye.transform.forward, out hit, 100f) && !changedPosition) {
 			if ((hit.transform.gameObject != gameObject && hit.transform.gameObject != ring) || delayScript.delay)
 				return;
@@ -137,22 +135,17 @@ public class SceneChangerTwoD : MonoBehaviour {
 			ring.transform.localScale = new Vector3(scale,scale,scale);
 			ringRightCopy.transform.localScale = new Vector3(scale,scale,scale);
 
-			//Debug.Log (SFXPlaying);
-			if ( triggerSFX && !SFXPlaying )
-			{
-				SFXTrigger();
-				SFXPlaying = true;
-			}
+			if ( !teleportSound && triggerTeleportSfx)
+				StartCoroutine( TeleportSound() );
 
 			if (timer > timerLimit) {
 
-				// Keep SFX playing during transition
-				keepSFX = true;
-
-				this.GetComponent<AudioSource>().Play ();
 				if (triggerMusic)
 					MusicTrigger();
+				if (triggerCarSound)
+					SFXSound.PlayOneShot(SFXSound.clip);
 
+				keep = true;
 				timer = 0f;
 				leftEyeParent.transform.position = target.transform.position;
 				rightEyeParent.transform.position = leftEyeParent.transform.position + rightEyeOffset;
@@ -170,13 +163,11 @@ public class SceneChangerTwoD : MonoBehaviour {
 					startLCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 					startRCopy.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 
-					//Shader fadeShader = Shader.Find ("Basic/TextureWithAlpha");
+
 					Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
 					for (int i = 0; i < rends.Length; i++) 
 					{	
 						Texture tex = rends [i].material.mainTexture;
-						//fadeMat.mainTexture = tex;
-						//rends [i].material = fadeMat;
 						rends [i].material.renderQueue = 9001;
 					}
 						
@@ -185,8 +176,6 @@ public class SceneChangerTwoD : MonoBehaviour {
 					for (int i = 0; i < rends.Length; i++) 
 					{	
 						Texture tex = rends [i].material.mainTexture;
-						//fadeMat.mainTexture = tex;
-						//rends [i].material = fadeMat;
 						rends [i].material.renderQueue = 9001;
 					}
 
@@ -204,22 +193,15 @@ public class SceneChangerTwoD : MonoBehaviour {
 				}
                 
                 if ( texSwapper )
-                {
                     TriggerTexSwapper();
-                }
 			}
 		} else {
 
 			timer = 0f;
 
-			// Stop sound when not aiming at reticle and we're not in "keep-mode"
-			//Debug.Log( triggerSFX + " " + SFXPlaying + " " + keepSFX );
-			if ( triggerSFX && SFXPlaying && !keepSFX )
-			{
-				// print("killed teleport audio");
-				SFXTrigger();
-				SFXPlaying = false;
-			}
+			if ( teleportSound && !keep && triggerTeleportSfx )
+				FadeOutTeleportSound();
+		
 			if (ring) {
 				Destroy(ring);
 			}
@@ -236,24 +218,25 @@ public class SceneChangerTwoD : MonoBehaviour {
 		musicPlayer.PlayMusic();
 	}
 
-	void SFXTrigger()
-	{
-		//Debug.Log (SFXPlaying);
-		if ( ! SFXPlaying )
-		{
-			//SFXSound.Play();
-			SFXSound.PlayOneShot(SFXSound.clip);
-		}
-		else
-		{
-			StartCoroutine ( AudioFader.FadeOut( SFXSound, 0.25f ) );
-		}
-	}
-
     void TriggerTexSwapper()
     {
         GameObject swapper = GameObject.FindGameObjectWithTag("TextureSwapper");
         swapper.GetComponent<TextureSwapper>().MoveEyes();
     }
+
+	IEnumerator TeleportSound ()
+	{
+		teleportSound = true;
+		SFXSound.PlayOneShot(SFXSound.clip);
+		yield return new WaitForSeconds(SFXSound.clip.length);
+		teleportSound = false;
+		keep = false;
+	}
+
+	void FadeOutTeleportSound ( )
+	{
+		teleportSound = false;
+		StartCoroutine( AudioFader.FadeOut( SFXSound, 0.05f ) );
+	}
 
 }
