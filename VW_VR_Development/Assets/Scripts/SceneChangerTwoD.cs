@@ -50,8 +50,6 @@ public class SceneChangerTwoD : MonoBehaviour {
 		rightCopy.GetComponent<lookAtCamera> ().cameraObject = rightEyeParent; 
  
 		ringColor = new Color (1f, 1f, 1f, 0f);
-
-
 	}
 
 	void Update () {
@@ -68,23 +66,31 @@ public class SceneChangerTwoD : MonoBehaviour {
 				startRCopy.GetComponent<Renderer>().material.color = color;
 				startRCopy.GetComponent<Renderer>().material.renderQueue = 9001;
 			}
-			else
+			else if ( startLCopy.GetComponentInChildren<Renderer>().material.color != null )
 			{
 				Renderer[] rends = startLCopy.GetComponentsInChildren<Renderer>();
 				for (int i = 0; i < rends.Length; i++)
 				{
-					color = rends [i].material.color;
-					color.a = fadeTimer / fadeTimerMax;
-					rends[i].material.color = color;
-					rends[i].material.renderQueue = 9001;
+					if ( rends[i].material.HasProperty("_Color") )
+					{
+						color = rends [i].material.color;
+						color.a = fadeTimer / fadeTimerMax;
+						rends[i].material.color = color;
+						rends[i].material.renderQueue = 9001;
+					}
+
 				}
 				rends = startRCopy.GetComponentsInChildren<Renderer>();
 				for (int i = 0; i < rends.Length; i++)
 				{
-					color = rends [i].material.color;
-					color.a = fadeTimer / fadeTimerMax;
-					rends[i].material.color = color;
-					rends[i].material.renderQueue = 9001;
+					if ( rends[i].material.HasProperty("_Color") )
+					{
+						color = rends [i].material.color;
+						color.a = fadeTimer / fadeTimerMax;
+						rends[i].material.color = color;
+						rends[i].material.renderQueue = 9001;
+					}
+				
 				}
 			}
 
