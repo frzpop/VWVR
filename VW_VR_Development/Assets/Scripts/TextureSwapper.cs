@@ -5,6 +5,7 @@ using System.Collections;
 public class TextureSwapper : MonoBehaviour {
 
 	public Renderer[] rends;
+	public Renderer[] otherRends;
 	public Texture2D[] texturePool;
 	public GameObject[] swapperEyes;
 	public Transform leftCardboard;
@@ -31,7 +32,14 @@ public class TextureSwapper : MonoBehaviour {
 		for (int i = 0; i < mats.Length; i++)
 		{
 			mats[i].shader = swapShader;
+			mats[i].color = new Color( 0.78f, 0.78f, 0.78f);
 		}
+
+		/*Shader shader = Shader.Find("Basic/TextureWithAlpha");
+		for (int i = 0; i < otherRends.Length; i++)
+		{
+			otherRends[i].material.shader = shader;
+		}*/
 			
 	}
 
@@ -39,6 +47,10 @@ public class TextureSwapper : MonoBehaviour {
 	{
 			
 		Swapper();
+		if (Input.GetKeyDown(KeyCode.N) )
+		{
+			print(rends[0].material.color);
+		}
 	}
 
 	void Swapper ()

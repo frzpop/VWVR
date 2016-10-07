@@ -137,6 +137,11 @@ public class TextureLoaderForest : MonoBehaviour
 
 	void ApplyTextures( Texture2D[] textures )
 	{
+		for (int i = 0; i < textures.Length; i++)
+		{
+			textures[i].wrapMode = TextureWrapMode.Clamp;
+		}
+
 		List<Renderer> sides = new List<Renderer>();
 		for (int i = 0; i < newCubes.Length; i++)
 		{
