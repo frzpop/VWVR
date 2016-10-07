@@ -137,7 +137,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 			ring.transform.localScale = new Vector3(scale,scale,scale);
 			ringRightCopy.transform.localScale = new Vector3(scale,scale,scale);
 
-			Debug.Log (SFXPlaying);
+			//Debug.Log (SFXPlaying);
 			if ( triggerSFX && !SFXPlaying )
 			{
 				SFXTrigger();
@@ -213,7 +213,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 			timer = 0f;
 
 			// Stop sound when not aiming at reticle and we're not in "keep-mode"
-			Debug.Log( triggerSFX + " " + SFXPlaying + " " + keepSFX );
+			//Debug.Log( triggerSFX + " " + SFXPlaying + " " + keepSFX );
 			if ( triggerSFX && SFXPlaying && !keepSFX )
 			{
 				// print("killed teleport audio");
@@ -238,7 +238,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 	void SFXTrigger()
 	{
-		Debug.Log (SFXPlaying);
+		//Debug.Log (SFXPlaying);
 		if ( ! SFXPlaying )
 		{
 			//SFXSound.Play();
