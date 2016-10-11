@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class TextureSwapperEye : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class TextureSwapperEye : MonoBehaviour
 	float limit = 1.25f;
 
 	public bool triggered = false;
+
+    public AudioSource SwapSound;
+	public bool triggerSound;
 
 	void Start()
 	{
@@ -65,6 +69,9 @@ public class TextureSwapperEye : MonoBehaviour
 		triggered = true;
 		swapper.SwapTexture( myID );
 		swapper.SetActiveEyes(gameObject);
+
+		if ( triggerSound )
+			StartCoroutine( SoundPlayer() );
 	}
 
 	public void RingAnim()
@@ -79,11 +86,17 @@ public class TextureSwapperEye : MonoBehaviour
 		myRing.transform.localScale = scaleVector;
 		myRingCopy.transform.localScale = scaleVector;
 	}
+
 	void RingReset()
 	{
 		timer = 0f;
 		ringColor = new Color(1f, 1f, 1f, 0f);
 	}
 
+	IEnumerator SoundPlayer()
+	{
+		SwapSound.PlayOneShot(SwapSound.clip);
+		yield return new WaitForSeconds(SwapSound.clip.length);
+	}
 
 }

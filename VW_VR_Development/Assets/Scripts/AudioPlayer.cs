@@ -12,7 +12,7 @@ public class AudioPlayer : MonoBehaviour {
 	}
 
 	void Update () {
-		if (leftEye.transform.position.z > 100 && !playing && !trigger) {
+		if (leftEye.transform.position.z > 0 && !playing && !trigger) {
 			playing = true;
 			StartCoroutine ( AudioFader.FadeIn( this.GetComponent<AudioSource> (), 1.5f ) );
 			// this.GetComponent<AudioSource> ().Play ();

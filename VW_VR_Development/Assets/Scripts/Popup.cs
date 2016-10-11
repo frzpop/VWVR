@@ -14,6 +14,10 @@ public class Popup : MonoBehaviour {
 	GameObject myPopupObjCopy;
 	public GameObject myRingCopy;
 	Color ringColor;
+    public AudioSource InSound;
+    public AudioSource OutSound;
+	public bool triggerSound;
+	AudioSource sound;
 
 	Vector3 texScale;
 
@@ -174,6 +178,9 @@ public class Popup : MonoBehaviour {
 
 			StartCoroutine(PopupAnim( value ));
 
+			if ( triggerSound )
+				StartCoroutine( SoundPlayer( true ) );
+
 		}
 		else
 		{
@@ -181,6 +188,10 @@ public class Popup : MonoBehaviour {
 			//copier.copy.transform.GetChild(0).gameObject.SetActive(false);
 
 			StartCoroutine(PopupAnim( value ));
+
+			if ( triggerSound )
+				StartCoroutine( SoundPlayer( false ) );
+
 		}	
 			
 	}
@@ -202,6 +213,20 @@ public class Popup : MonoBehaviour {
 		ringColor = new Color(1f, 1f, 1f, 0f);
 	}
 
+	IEnumerator SoundPlayer( bool SoundType )
+	{
+		if ( SoundType )
+		{
+			InSound.PlayOneShot(InSound.clip);
+			yield return new WaitForSeconds(InSound.clip.length);
+		}
+		else
+		{
+			OutSound.PlayOneShot(OutSound.clip);
+			yield return new WaitForSeconds(OutSound.clip.length);
+		}
+
+	}
 
 	public IEnumerator PopupAnim( bool vaule )
 	{
