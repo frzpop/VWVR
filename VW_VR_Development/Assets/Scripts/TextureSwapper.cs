@@ -155,6 +155,12 @@ public class TextureSwapper : MonoBehaviour {
 		case 10:
 			id = 5;
 			break;
+		case 12:
+			id = 6;
+			break;
+		case 14:
+			id = 7;
+			break;
 		}
 
 		switch ( id ) 
@@ -176,6 +182,12 @@ public class TextureSwapper : MonoBehaviour {
 			break;
 		case 5:
 			textMesh.text = "Starlight Blue Metallic";
+			break;
+		case 6:
+			textMesh.text = "Candy White";
+			break;
+		case 7:
+			textMesh.text = "Deep Black Pearl Effect";
 			break;
 		}
 

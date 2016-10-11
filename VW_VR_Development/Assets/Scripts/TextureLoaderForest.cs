@@ -7,7 +7,7 @@ public class TextureLoaderForest : MonoBehaviour
 
 	string path = "http://arielsantibanez.com/onewebmedia/temp/"; // for testing only
 	//string path = "http://extern.volkswagen-transportbilar.se/nya-amarok/amarok360/bundles/";
-	int version = 3;
+	int version = 4;
 	WWW www;
 	public GameObject[] newCubes;
 	public Renderer[] introCubesRend;
@@ -64,12 +64,12 @@ public class TextureLoaderForest : MonoBehaviour
 
 		if (PlayerPrefs.GetInt("lang") == 1)
 		{
-			/*for (int i = 0; i < popups.Length; i++)
+			for (int i = 0; i < popups.Length; i++)
 			{
-				Popup scr = popups[i].GetComponent<Popup>();
+				Popup scr = popups[i].GetComponent<Popup>();	
 				scr.myID += (scr.textures.Length / 2);
-			}*/
-
+			}
+			
 			for (int i = 0; i < introCubesRend.Length; i++)
 			{
 				Material mat = introCubesRend[i].material;

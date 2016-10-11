@@ -38,7 +38,7 @@ public class StartMenu : MonoBehaviour {
 	{
 		bgImg.sprite = loadingSprites[PlayerPrefs.GetInt("lang")];
 		yield return new WaitForSeconds(delay);
-		SceneManager.LoadScene("test_08");
+		SceneManager.LoadScene("forest_scene_audio");
 	}
 
 }
