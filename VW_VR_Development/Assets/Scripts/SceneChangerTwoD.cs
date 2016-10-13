@@ -8,6 +8,7 @@ public class SceneChangerTwoD : MonoBehaviour {
 	public GameObject rightEyeParent;
 	public GameObject rightCopyPrefab;
 	public GameObject target;
+	public GameObject targetR;
 	public GameObject startL;
 	public GameObject startR;
 	public GameObject ringPrefab;
@@ -42,6 +43,8 @@ public class SceneChangerTwoD : MonoBehaviour {
 	public SceneChangeDelay delayScript;
 
     public bool texSwapper;
+
+	public RandomSound[] rndSoundPlayers;
 
 
 	void Start () {
@@ -103,6 +106,9 @@ public class SceneChangerTwoD : MonoBehaviour {
 				changedPosition = false;
 				color.a = 0f;
 				fadeTimer = fadeTimerMax;
+
+				startL.SetActive(false);
+				startR.SetActive(false);
 			}
 		}
 
@@ -142,8 +148,12 @@ public class SceneChangerTwoD : MonoBehaviour {
 
 				if (triggerMusic)
 					MusicTrigger();
+
 				if (triggerCarSound)
 					SFXSound.PlayOneShot(SFXSound.clip);
+
+				target.SetActive(true);
+				targetR.SetActive(true);
 
 				keep = true;
 				timer = 0f;
@@ -216,12 +226,20 @@ public class SceneChangerTwoD : MonoBehaviour {
 	void MusicTrigger()
 	{
 		musicPlayer.PlayMusic();
+		if (rndSoundPlayers[0] != null)
+		{
+			for (int i = 0; i < rndSoundPlayers.Length; i++)
+				rndSoundPlayers[i].StartRandomSounds();
+		}
+			
+
+
 	}
 
     void TriggerTexSwapper()
     {
         GameObject swapper = GameObject.FindGameObjectWithTag("TextureSwapper");
-        swapper.GetComponent<TextureSwapper>().MoveEyes();
+        swapper.GetComponent<TextureSwapper>().Initialize();
     }
 
 	IEnumerator TeleportSound ()

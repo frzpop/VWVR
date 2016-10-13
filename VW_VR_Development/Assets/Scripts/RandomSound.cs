@@ -10,8 +10,9 @@ public class RandomSound : MonoBehaviour {
 	private float timecount;
 	private float starttime;
 
-	void Start () {
-        StartCoroutine( SoundWaiter() );
+	public void StartRandomSounds()
+	{
+		StartCoroutine( SoundWaiter() );
 	}
 
     IEnumerator SoundWaiter()

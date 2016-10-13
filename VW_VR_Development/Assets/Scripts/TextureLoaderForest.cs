@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class TextureLoaderForest : MonoBehaviour
 {
 
-	string path = "http://arielsantibanez.com/onewebmedia/temp/"; // for testing only
-	//string path = "http://extern.volkswagen-transportbilar.se/nya-amarok/amarok360/bundles/";
+	//string path = "http://arielsantibanez.com/onewebmedia/temp/"; // for testing only
+	string path = "http://extern.volkswagen-transportbilar.se/nya-amarok/amarok360/bundles/";
 	int version = 4;
 	WWW www;
 	public GameObject[] newCubes;
@@ -24,6 +24,8 @@ public class TextureLoaderForest : MonoBehaviour
 	Texture2D[] textures;
 	bool load = false;
 	bool done = false;
+
+	public TextureSwapper swapper;
 
 	void Awake()
 	{
@@ -152,6 +154,16 @@ public class TextureLoaderForest : MonoBehaviour
 			sides[i].material.mainTexture = textures[i];
 		}
 		sides.Clear();
+
+		swapper.AddDefaultTexToPool();
+
+		for (int i = 0; i < newCubes.Length; i++)
+		{
+			if ( i > 1 )
+			{
+				newCubes[i].SetActive(false);
+			}
+		}
 	}
 
 	void Loading(bool loading)

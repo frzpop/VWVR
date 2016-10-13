@@ -63,6 +63,7 @@ public class TextureLoader : MonoBehaviour
 		}
 		StartCoroutine( LoadTexures( path + fileName ) );
 
+		
 		if (PlayerPrefs.GetInt("lang") == 1)
 		{
 			for (int i = 0; i < popups.Length; i++)
